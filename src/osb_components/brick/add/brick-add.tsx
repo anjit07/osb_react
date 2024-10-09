@@ -5,6 +5,9 @@ import { BrickType } from "src/models/brick/brick-type-interface";
 import Grid from '@mui/material/Grid2';
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import brickTypeService from "src/service/brickType/brick-type.service";
+import { useEffect } from "react";
+import { LoggerWrapper } from "src/utils/logger.wrapper";
 function BrickAdd(){
 
     const { register,formState: { errors }, handleSubmit} = useForm<BrickType>({mode:"all"});
@@ -12,9 +15,20 @@ function BrickAdd(){
   
     const onSubmit = (data:BrickType) => {
       console.log("Submitted Brick Data:", data);
-      //navigate("/dashboards/crypto");
+      LoggerWrapper.info("on Submit form data: []",data);
+      //navigate("/dashboard/client");
     };
   
+    const bricks=async () =>{
+      const data = await brickTypeService.getBricks();
+      LoggerWrapper.debug(" BrickAdd getBricks: []",data);
+    }
+
+    useEffect(() => {
+      bricks();
+    }, []);
+
+
     return <>
        <Helmet>
         <title>Add Brick</title>
